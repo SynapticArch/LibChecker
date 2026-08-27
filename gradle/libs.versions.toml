@@ -1,20 +1,20 @@
 [versions]
-agp = "9.3.1"
+agp = "9.3.2"
 aboutlibraries = "14.2.1"
 androidX-lifecycle = "2.11.0"
-androidX-room3 = "3.0.1"
+androidX-room3 = "3.0.2"
 androidX-benchmark = "1.4.1"
 androidX-collection = "1.6.0"
 appIconLoader = "1.5.0"
 coil = "2.7.0"
-firebase-bom = "34.17.0"
+firebase-bom = "34.18.0"
 hiddenApiRefine = "4.4.0"
 kotlin = "2.4.10"
 ktlint = "1.8.0"
 koin-bom = "4.2.2"
-protoc = "4.35.1"
+protoc = "4.36.0"
 shizuku = "13.1.5"
-spotless = "8.9.0"
+spotless = "8.10.0"
 square-retrofit = "3.0.0"
 zhaobozhen = "1.1.8"
 
@@ -22,7 +22,7 @@ zhaobozhen = "1.1.8"
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-test = { id = "com.android.test", version.ref = "agp" }
-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.7" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.8" }
 gms = { id = "com.google.gms.google-services", version = "4.5.0" }
 hiddenApiRefine = { id = "dev.rikka.tools.refine", version.ref = "hiddenApiRefine" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
@@ -49,7 +49,7 @@ androidX-browser = "androidx.browser:browser:1.10.0"
 androidX-collection = { module = "androidx.collection:collection", version.ref = "androidX-collection" }
 androidX-constraintLayout = "androidx.constraintlayout:constraintlayout:2.2.2"
 androidX-core = "androidx.core:core-ktx:1.19.0"
-androidX-fragment = "androidx.fragment:fragment-ktx:1.8.9"
+androidX-fragment = "androidx.fragment:fragment-ktx:1.9.0"
 androidX-lifecycle-service = { module = "androidx.lifecycle:lifecycle-service", version.ref = "androidX-lifecycle" }
 androidX-lifecycle-viewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidX-lifecycle" }
 androidX-preference = "androidx.preference:preference-ktx:1.2.1"
@@ -63,7 +63,7 @@ androidX-viewPager2 = "androidx.viewpager2:viewpager2:1.1.0"
 androidX-window = "androidx.window:window:1.5.1"
 
 square-moshi = "com.squareup.moshi:moshi:1.15.2"
-square-okHttp = "com.squareup.okhttp3:okhttp:5.4.0"
+square-okHttp = "com.squareup.okhttp3:okhttp:5.5.0"
 square-okio = "com.squareup.okio:okio:3.18.1"
 square-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "square-retrofit" }
 square-retrofit-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "square-retrofit" }

@@ -11,6 +11,8 @@ import android.widget.FrameLayout
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.doOnNextLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +26,7 @@ import com.absinthe.libchecker.annotation.STATUS_START_INIT
 import com.absinthe.libchecker.annotation.STATUS_START_REQUEST_CHANGE
 import com.absinthe.libchecker.constant.Constants
 import com.absinthe.libchecker.constant.OnceTag
+import com.absinthe.libchecker.constant.options.AdvancedOptions
 import com.absinthe.libchecker.database.entity.LCItem
 import com.absinthe.libchecker.databinding.FragmentAppListBinding
 import com.absinthe.libchecker.domain.app.list.GetRandomAppIconUseCase
@@ -71,6 +74,15 @@ const val VF_LIST = 1
 const val VF_INIT = 2
 const val VF_REJECT = 3
 private const val APP_LIST_UPDATE_DEBOUNCE_MS = 250L
+private const val APP_LIST_FILTER_AND_SORT_OPTIONS =
+  AdvancedOptions.SHOW_SYSTEM_APPS or
+    AdvancedOptions.SHOW_SYSTEM_FRAMEWORK_APPS or
+    AdvancedOptions.SHOW_OVERLAYS or
+    AdvancedOptions.SHOW_64_BIT_APPS or
+    AdvancedOptions.SHOW_32_BIT_APPS or
+    AdvancedOptions.SORT_BY_NAME or
+    AdvancedOptions.SORT_BY_UPDATE_TIME or
+    AdvancedOptions.SORT_BY_TARGET_API
 
 class AppListFragment :
   BaseListControllerFragment<FragmentAppListBinding>(),
@@ -90,6 +102,7 @@ class AppListFragment :
   private var isSearchTextClearOnce = false
   private var firstScrollFlag = false
   private var hasInitializedItems = false
+  private var suppressImeOnNextSearchRestore = false
   private var pendingDumpAppsInfoAction: HomeViewModel.AppListSearchCommandAction.DumpAppsInfo? = null
 
   private lateinit var layoutManager: RecyclerView.LayoutManager
@@ -104,6 +117,7 @@ class AppListFragment :
         if (AntiShakeUtils.isInvalidClick(view)) {
           return@setOnItemClickListener
         }
+        suppressImeOnNextSearchRestore = menu?.findItem(R.id.search)?.isActionViewExpanded == true
         activity?.launchDetailPage(it.getItem(position))
       }
       it.setHasStableIds(true)
@@ -336,7 +350,16 @@ class AppListFragment :
       actionView = searchView
       if (initialSearchState.shouldExpand) {
         expandActionView()
+        if (
+          shouldSuppressImeAfterSearchRestore(
+            suppressImeOnNextSearchRestore = suppressImeOnNextSearchRestore,
+            shouldExpand = initialSearchState.shouldExpand
+          )
+        ) {
+          suppressImeAfterSearchRestore(searchView)
+        }
       }
+      suppressImeOnNextSearchRestore = false
 
       if (!isListReady) {
         isVisible = false
@@ -344,6 +367,19 @@ class AppListFragment :
     }
     searchView.setQuery(initialSearchState.query, false)
     searchView.setOnQueryTextListener(this@AppListFragment)
+  }
+
+  private fun suppressImeAfterSearchRestore(searchView: SearchView) {
+    searchView.clearFocus()
+    searchView.post {
+      if (!isAdded) {
+        return@post
+      }
+      searchView.clearFocus()
+      val activityWindow = requireActivity().window
+      WindowInsetsControllerCompat(activityWindow, activityWindow.decorView)
+        .hide(WindowInsetsCompat.Type.ime())
+    }
   }
 
   override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -361,12 +397,14 @@ class AppListFragment :
               onItemDisplayOptionsChanged = homeViewModel::setAppListItemDisplayOptions
             )
             setOnDismissListener { advancedDiff, itemAdvancedDiff ->
+              val shouldReturnTopAfterUpdate =
+                shouldReturnAppListTopAfterAdvancedMenuChange(advancedDiff)
               val dismissPlan = homeViewModel.onAppListAdvancedMenuDismissed(
                 displayOptionsDiff = advancedDiff,
                 itemDisplayOptionsDiff = itemAdvancedDiff
               )
               if (dismissPlan.shouldRefreshItems) {
-                updateItems()
+                updateItems(shouldReturnTopAfterUpdate = shouldReturnTopAfterUpdate)
               }
               advancedMenuBSDFragment = null
             }
@@ -693,9 +731,20 @@ class AppListFragment :
   }
 }
 
+internal fun shouldSuppressImeAfterSearchRestore(
+  suppressImeOnNextSearchRestore: Boolean,
+  shouldExpand: Boolean
+): Boolean {
+  return suppressImeOnNextSearchRestore && shouldExpand
+}
+
 internal fun shouldReturnAppListTopAfterSearch(
   previousQuery: String,
   newQuery: String
 ): Boolean {
-  return previousQuery.isNotEmpty() && newQuery.isEmpty()
+  return previousQuery != newQuery
+}
+
+internal fun shouldReturnAppListTopAfterAdvancedMenuChange(displayOptionsDiff: Int): Boolean {
+  return displayOptionsDiff and APP_LIST_FILTER_AND_SORT_OPTIONS != 0
 }

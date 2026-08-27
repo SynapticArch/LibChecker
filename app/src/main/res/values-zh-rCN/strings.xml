@@ -99,12 +99,14 @@
   <string name="library_declaration">LibChecker 中的所有标记库信息均来自其所属的 SDK 的开发文档或代码仓库，如果信息有有误，请联系：absinthe@absinthe.life</string>
   <!--  Settings  -->
   <string name="pref_group_normal">常规</string>
+  <string name="pref_group_appearance">界面</string>
   <string name="pref_group_others">其它</string>
   <string name="pref_group_rules">规则与网络</string>
   <string name="pref_group_data">数据与工具</string>
   <string name="pref_group_about">关于与支持</string>
   <string name="apk_analytics">APK 分析</string>
   <string name="colorful_icon">多彩图标</string>
+  <string name="blur_design">模糊设计</string>
   <string name="rules_repo_title">规则仓库</string>
   <string name="lib_ref_threshold">库引用阈值</string>
   <string name="languages">语言</string>
@@ -114,11 +116,14 @@
   <string name="anonymous_statistics">匿名统计</string>
   <string name="cloud_rules">云端规则</string>
   <string name="dark_mode">深色模式</string>
+  <string name="amoled_theme">纯黑主题</string>
   <string name="snapshot_keep">快照默认保留规则</string>
   <string name="export_log">导出日志</string>
   <string name="export_apps">导出应用信息</string>
   <string name="apk_analytics_summary">当点击一个 APK 文件时打开详情页</string>
   <string name="colorful_icon_summary">部分标记库会呈现为彩色 Logo</string>
+  <string name="amoled_theme_summary">在深色模式下使用纯黑背景</string>
+  <string name="blur_design_summary">为界面提供更多的模糊效果</string>
   <string name="lib_ref_threshold_summary">只有库引用数量达到阈值的库才显示在列表中</string>
   <string name="reload_apps_summary">当应用列表显示不正常时尝试此选项</string>
   <string name="export_log_summary">导出应用的日志文件</string>
@@ -263,6 +268,7 @@
   <string name="feature_live_update_notification_summary">系统会提升实时更新通知的优先级。升级的通知在系统界面上会更醒目地显示，包括在通知抽屉顶部、锁屏上以及状态栏中以微件形式显示。</string>
   <!--  Toast  -->
   <string name="toast_copied_to_clipboard">已复制到剪贴板</string>
+  <string name="snapshot_report_share_failed">分享快照报告失败</string>
   <string name="toast_not_existing_market">设备中不存在应用市场</string>
   <string name="toast_use_another_file_manager">请使用其它文件管理器打开此 APK</string>
   <string name="toast_cant_open_app">无法启动此应用</string>
@@ -307,13 +313,13 @@
   <string name="snapshot_build_id">Build ID</string>
   <string name="snapshot_build_security_patch">安全补丁</string>
   <!--  Dialog  -->
-  <string name="dialog_title_reload_apps">确定要重载应用列表吗？</string>
+  <string name="dialog_title_reload_apps">重载应用列表？</string>
   <string name="dialog_subtitle_reload_apps">这可能会花费一点时间</string>
   <string name="dialog_title_change_timestamp">更换时间节点</string>
   <string name="dialog_title_keep_previous_snapshot">注意</string>
   <string name="dialog_message_keep_previous_snapshot">是否保留上一张快照？</string>
   <string name="dialog_title_select_to_delete">选择日期以删除快照</string>
-  <string name="dialog_title_confirm_to_delete">确定要删除此快照吗？</string>
+  <string name="dialog_title_confirm_to_delete">删除此快照？</string>
   <string name="dialog_message_confirm_to_delete">%s\n\n此时间节点及其全部应用记录将被永久删除，且无法撤销。</string>
   <string name="dialog_action_delete">删除</string>
   <string name="btn_keep">保留</string>
