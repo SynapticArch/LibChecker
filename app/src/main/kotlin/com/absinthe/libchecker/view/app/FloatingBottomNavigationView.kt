@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlin.math.roundToInt
 
 class FloatingBottomNavigationView @JvmOverloads constructor(
   context: Context,
@@ -39,6 +40,15 @@ class FloatingBottomNavigationView @JvmOverloads constructor(
 
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+    if (currentFloatingProgress > 0f) {
+      val floatingHeight = 56 * resources.displayMetrics.density + paddingTop + paddingBottom
+      val height = (measuredHeight + (floatingHeight - measuredHeight) * currentFloatingProgress).roundToInt()
+      val resolvedHeightSpec = MeasureSpec.makeMeasureSpec(
+        resolveSize(height, heightMeasureSpec),
+        MeasureSpec.EXACTLY
+      )
+      super.onMeasure(widthMeasureSpec, resolvedHeightSpec)
+    }
     thumbController.onMeasure()
   }
 
