@@ -61,6 +61,7 @@ import com.absinthe.libchecker.domain.home.ui.view.RecentVisitItem
 import com.absinthe.libchecker.domain.home.ui.view.RecentVisitsPopup
 import com.absinthe.libchecker.domain.home.ui.view.startRecentVisitDrag
 import com.absinthe.libchecker.domain.rules.CloudRulesRepository
+import com.absinthe.libchecker.domain.settings.ui.SettingsContainerFragment
 import com.absinthe.libchecker.services.IWorkerService
 import com.absinthe.libchecker.services.WorkerService
 import com.absinthe.libchecker.ui.base.BaseActivity
@@ -151,7 +152,7 @@ class MainActivity :
   }
 
   @Suppress("DEPRECATION")
-  private val navViewBehavior by lazy { InvalidatingHideBottomViewOnScrollBehavior() }
+  private val navViewBehavior by lazy { InvalidatingHideBottomViewOnScrollBehavior { imeController?.miniActive != true } }
   private var navPillDrawable: G2PillDrawable? = null
   private var originalNavBackground: Drawable? = null
   private var floatingNavBarAnimator: ValueAnimator? = null
@@ -707,6 +708,9 @@ class MainActivity :
   private fun isListItemUnderAppbar(): Boolean {
     val recyclerView = appbarScrollTarget ?: return false
     if (recyclerView.canScrollVertically(-1)) return true
+    // Without blur, the scrolling behavior keeps content below the appbar. A newly attached
+    // page can still report pre-layout screen coordinates while ViewPager2 switches fragments.
+    if (blurContainer?.blurEnabled != true) return false
     val firstListItem = recyclerView.findTopmostChild() ?: return false
     binding.appbar.getLocationOnScreen(appbarLocation)
     recyclerView.getLocationOnScreen(appbarScrollTargetLocation)
@@ -804,6 +808,12 @@ class MainActivity :
         registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
           override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
+            viewpager.post {
+              if (viewpager.currentItem != HomeDestination.SETTINGS.pageIndex) {
+                settingsContainer()?.closeAppearance()
+              }
+              updateSettingsNavigation()
+            }
             navView.menu.findItem(HomeDestination.requirePageIndex(position).navigationItemId).isChecked = true
             navView.post { bindRecentVisitsShortcuts(navView) }
             appViewModel.clearMenuState()
@@ -986,6 +996,7 @@ class MainActivity :
   }
 
   private fun navigateToPage(index: Int) {
+    settingsContainer()?.closeAppearance()
     val viewPager = binding.viewpager
     isPageTransitionRunning = true
     updateAppbarContentUnderlap()
@@ -1047,7 +1058,24 @@ class MainActivity :
 
   private fun renderToolbarTitle(state: HomeToolbarTitleState) {
     toolbarTitleState = state
-    toolbarTitleView.bind(state)
+    toolbarTitleView.bind(
+      if (isAppearanceVisible()) {
+        HomeToolbarTitleState(title = getString(R.string.pref_group_appearance))
+      } else {
+        state
+      }
+    )
+  }
+
+  private fun settingsContainer(): SettingsContainerFragment? = supportFragmentManager.findFragmentByTag("f${HomeDestination.SETTINGS.pageIndex}") as? SettingsContainerFragment
+
+  private fun isAppearanceVisible(): Boolean = binding.viewpager.currentItem == HomeDestination.SETTINGS.pageIndex &&
+    settingsContainer()?.isAppearanceVisible == true
+
+  fun updateSettingsNavigation() {
+    supportActionBar?.setDisplayHomeAsUpEnabled(isAppearanceVisible())
+    binding.toolbar.setNavigationOnClickListener { settingsContainer()?.closeAppearance() }
+    if (::toolbarTitleState.isInitialized) renderToolbarTitle(toolbarTitleState)
   }
 
   override fun onResume() {
@@ -1165,6 +1193,10 @@ class MainActivity :
 
       effect.onEach {
         when (it) {
+          HomeViewModel.Effect.PackageListLoadFailed -> {
+            doOnMainThreadIdle { showNavigationView() }
+          }
+
           is HomeViewModel.Effect.ReloadApps -> {
             binding.viewpager.setCurrentItem(HomeDestination.APP_LIST.pageIndex, true)
           }

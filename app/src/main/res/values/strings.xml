@@ -1,4 +1,5 @@
 <resources>
+  <string name="package_list_load_failed">Unable to load installed apps. Please try again.</string>
   <!--  General  -->
   <string name="title_app_list">Apps</string>
   <string name="title_statistics">Statistics</string>
@@ -113,6 +114,7 @@
   <!--  Settings  -->
   <string name="pref_group_normal">Normal</string>
   <string name="pref_group_appearance">Appearance</string>
+  <string name="pref_appearance_summary">Personalize the interface</string>
   <string name="pref_group_rules">Rules and network</string>
   <string name="pref_group_data">Data and tools</string>
   <string name="pref_group_about">About and support</string>
@@ -313,6 +315,16 @@
   <string name="snapshot_scheme_tip"><![CDATA[Tip: You can now generate snapshots in the background via:<br><b>%s</b>]]></string>
   <string name="snapshot_build_id">Build ID</string>
   <string name="snapshot_build_security_patch">Security patch</string>
+  <plurals name="snapshot_contribution_updates_count">
+    <item quantity="one">%d update</item>
+    <item quantity="other">%d updates</item>
+  </plurals>
+  <string name="snapshot_contribution_recent_days">Recent %d days</string>
+  <string name="snapshot_contribution_tile_detail">%1$s: %2$s</string>
+  <string name="snapshot_contribution_tile_detail_with_snapshot">%1$s: %2$s · Snapshot captured</string>
+  <string name="snapshot_contribution_hint">Tap a tile to view daily updates</string>
+  <string name="snapshot_contribution_no_updates">No app updates on this day</string>
+  <string name="snapshot_contribution_snapshot_captured">Snapshot captured</string>
 
   <!--  Dialog  -->
   <string name="dialog_title_reload_apps">Reload all apps?</string>
@@ -414,4 +426,6 @@
   <string name="lib_reference_switch_to_list">Switch to list</string>
   <string name="lib_reference_other">Other</string>
   <string name="lib_reference_other_description">Other: %1$d libraries, %2$d references</string>
+  <string name="legacy_snapshot_detail">Legacy snapshot detail page</string>
+  <string name="legacy_snapshot_detail_summary">Use the classic card layout for snapshot details</string>
 </resources>
