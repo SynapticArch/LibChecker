@@ -16,6 +16,16 @@ plugins {
   id("market-stable-manifest")
 }
 
+val rulesBundleTestData = configurations.create("rulesBundleTestData") {
+  isCanBeConsumed = false
+  isTransitive = false
+}
+tasks.withType<Test>().configureEach {
+  val archive = files(rulesBundleTestData)
+  inputs.files(archive)
+  doFirst { systemProperty("rulesBundleAar", archive.singleFile.absolutePath) }
+}
+
 ksp {
   arg("moshi.generated", "javax.annotation.Generated")
 }
@@ -46,10 +56,6 @@ setupAppModule {
     release {
       optimization {
         enable = true
-        keepRules {
-          // https://github.com/AppDevNext/AndroidChart/blob/master/chartLib/proguard-lib.pro
-          ignoreFrom(libs.mpAndroidChart.get().module.toString())
-        }
       }
     }
     create("benchmark") {
@@ -148,6 +154,7 @@ dependencies {
   implementation(libs.rikka.refine.runtime)
   implementation(libs.bundles.zhaobozhen)
   implementation(libs.lc.rules)
+  add(rulesBundleTestData.name, libs.lc.rules)
   ksp(libs.androidX.room3.compiler)
 
   testImplementation(libs.junit)
@@ -177,6 +184,12 @@ dependencies {
   "marketImplementation"(platform(libs.firebase.bom))
   "marketImplementation"(libs.bundles.firebase) {
     exclude(group = "com.google.android.gms", module = "play-services-ads-identifier")
+  }
+}
+
+aboutLibraries {
+  collect {
+    configPath = file("aboutlibraries")
   }
 }
 
