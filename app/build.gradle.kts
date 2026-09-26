@@ -59,8 +59,8 @@ setupAppModule {
         // Scope broad consumer rules locally; exact versions restore upstream rules on upgrade.
         keepRules {
           includeDefault = false
-          ignoreFrom("androidx.annotation:annotation-jvm:1.10.0")
-          ignoreFrom("androidx.coordinatorlayout:coordinatorlayout:1.1.0")
+          ignoreFrom("androidx.annotation:annotation-jvm:1.11.0")
+          ignoreFrom("androidx.coordinatorlayout:coordinatorlayout:1.3.0")
           ignoreFrom("androidx.recyclerview:recyclerview:1.4.0")
           ignoreFrom("com.google.android.material:material:1.14.0")
         }
@@ -89,7 +89,7 @@ setupAppModule {
     create("market") {
       dimension = flavorDimensions[0]
       optimization {
-        keepRules { ignoreFrom("com.google.android.gms:play-services-basement:18.9.0") }
+        keepRules { ignoreFrom("com.google.android.gms:play-services-basement:18.12.0") }
       }
       buildConfigField("Boolean", "IS_FOSS", "false")
     }
