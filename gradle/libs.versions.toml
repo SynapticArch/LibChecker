@@ -7,7 +7,7 @@ androidX-benchmark = "1.5.0"
 androidX-collection = "1.7.0"
 appIconLoader = "1.5.0"
 coil = "2.7.0"
-firebase-bom = "35.0.2"
+firebase-bom = "35.1.0"
 hiddenApiRefine = "4.4.0"
 kotlin = "2.4.21"
 ktlint = "1.8.0"
@@ -65,7 +65,7 @@ androidX-viewPager2 = "androidx.viewpager2:viewpager2:1.1.0"
 androidX-window = "androidx.window:window:1.5.1"
 
 square-moshi = "com.squareup.moshi:moshi:1.15.2"
-square-okHttp = "com.squareup.okhttp3:okhttp:5.5.0"
+square-okHttp = "com.squareup.okhttp3:okhttp:5.5.1"
 square-okio = "com.squareup.okio:okio:3.18.2"
 square-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "square-retrofit" }
 square-retrofit-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "square-retrofit" }
