@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageButton
-import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.doOnNextLayout
 import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.dynamicanimation.animation.SpringAnimation
@@ -94,6 +93,7 @@ class LibReferenceMenuBSDView(
 
   private val demoAdapter = LibReferenceAdapter(
     allowDetailAction = false,
+    diffUpdates = true,
     onAction = {},
     onItemBound = ::preparePendingDemoInsertion
   )
@@ -213,7 +213,7 @@ class LibReferenceMenuBSDView(
     displayModeButton.contentDescription = context.getString(
       if (isTreemap) R.string.lib_reference_switch_to_list else R.string.lib_reference_switch_to_treemap
     )
-    TooltipCompat.setTooltipText(displayModeButton, displayModeButton.contentDescription)
+    displayModeButton.tooltipText = displayModeButton.contentDescription
     displayModeButton.setOnClickListener { onToggle() }
   }
 

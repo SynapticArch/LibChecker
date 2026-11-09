@@ -5,7 +5,7 @@ import java.io.File
 import org.gradle.api.Project
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 
-const val baseVersionName = "2.5.5"
+const val baseVersionName = "2.5.6"
 
 fun Project.setupLibraryModule(block: LibraryExtension.() -> Unit = {}) {
   setupBaseModule(block)
@@ -18,7 +18,7 @@ fun Project.setupAppModule(block: ApplicationExtension.() -> Unit = {}) {
     defaultConfig {
       versionCode = projectVersion.code
       versionName = projectVersion.name
-      minSdk = 24
+      minSdk = 26
       targetSdk = 37
 
       androidResources {
